@@ -4,15 +4,7 @@ networks:
   overlay:
     external:
       name: pg_cluster_network
-
-volumes:
-  pg_access_node_data:
-    driver: local
-  pg_data_node_1_data:
-    driver: local
-  pg_data_node_2_data:
-    driver: local
-
+      
 services:
   pg_access_node:
     image: timescale/timescaledb-postgis:2.3.0-pg13
@@ -27,7 +19,7 @@ services:
     networks:
       - overlay
     volumes:
-      - pg_access_node_data:/var/lib/postgresql/data
+      - /db-data/timescaledb/access_node_data:/var/lib/postgresql/data
       - ./trust-all.sh:/docker-entrypoint-initdb.d/777_trust.sh
       - ./unsafe-boost.sh:/docker-entrypoint-initdb.d/888_boost.sh
       - ./init-access-node.sh:/docker-entrypoint-initdb.d/999_cluster.sh
@@ -46,7 +38,7 @@ services:
     networks:
       - overlay
     volumes:
-      - pg_data_node_1_data:/var/lib/postgresql/data
+      - /db-data/timescaledb/data_node_1_data:/var/lib/postgresql/data
       - ./trust-all.sh:/docker-entrypoint-initdb.d/777_trust.sh
       - ./unsafe-boost.sh:/docker-entrypoint-initdb.d/888_boost.sh
       - ./init-data-node.sh:/docker-entrypoint-initdb.d/999_cluster.sh
@@ -64,7 +56,7 @@ services:
     networks:
       - overlay
     volumes:
-      - pg_data_node_2_data:/var/lib/postgresql/data
+      - /db-data/timescaledb/data_node_2_data:/var/lib/postgresql/data
       - ./trust-all.sh:/docker-entrypoint-initdb.d/777_trust.sh
       - ./unsafe-boost.sh:/docker-entrypoint-initdb.d/888_boost.sh
       - ./init-data-node.sh:/docker-entrypoint-initdb.d/999_cluster.sh

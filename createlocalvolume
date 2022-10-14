@@ -1,0 +1,16 @@
+create external disk - mount
+lsblk
+mkfs.ext4 /dev/sdb
+
+mkdir -p /db-data
+mount /dev/sdb /db-data/
+
+mkdir -p /db-data/timescaledb/access_node_data
+mkdir -p /db-data/timescaledb/data_node_2_data
+mkdir -p /db-data/timescaledb/data_node_1_data
+
+blkid
+echo "UUID=728cf5fc-71e8-4366-87ed-f93b19855f3e /db-data  ext4    defaults        0       0" >> /etc/fstab
+findmnt --verify
+mount -a 
+mount -l
